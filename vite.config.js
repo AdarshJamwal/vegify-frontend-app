@@ -9,7 +9,7 @@ export default defineConfig({
     proxy: {
       "/api": {
         target: "https://vegify-recipe-app-backend.vercel.app",
-        secure: false,
+        changeOrigin: true,
       },
     },
   },
