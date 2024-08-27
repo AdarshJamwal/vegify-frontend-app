@@ -6,7 +6,7 @@ import OAuth from "../components/OAuth";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
-  const {loading, error} = useSelector((state)=>state.user)
+  const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -18,7 +18,7 @@ export default function SignIn() {
     e.preventDefault();
 
     try {
-      dispatch(signInStart())
+      dispatch(signInStart());
       const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: {
@@ -29,20 +29,18 @@ export default function SignIn() {
 
       const data = await res.json();
       if (data.success === false) {
-         dispatch(signInFailure(data.message)) //setError(true);
+        dispatch(signInFailure(data.message));
         return;
       }
-      dispatch(signInSuccess(data))  // setLoading(false);
-      navigate('/')
+      dispatch(signInSuccess(data));
+      navigate('/');
     } catch (error) {
-      dispatch(signInFailure(error))   // setLoading(false);
-                                             // setError(true);we give error as a payload 
-      
+      dispatch(signInFailure(error.message || "An error occurred"));
     }
-
   };
+
   return (
-    <div className="p-3  max-w-lg mx-auto mt-16">
+    <div className="p-3 max-w-lg mx-auto mt-16">
       <h1 className="text-3xl text-center font-semibold my-3">Sign In</h1>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -70,12 +68,13 @@ export default function SignIn() {
         <OAuth />
       </form>
       <div className="flex gap-2 mt-5">
-        <p>Dont Have an account?</p>
+        <p>Don't have an account?</p>
         <Link to="/sign-up">
           <span className="text-blue-500">Sign up</span>
         </Link>
       </div>
-      <p className="text-red-700 mt-5">{error ? error || "Something went wrong!" : ""}</p>
+      {/* Only render the error if it is a string */}
+      <p className="text-red-700 mt-5">{typeof error === "string" ? error : ""}</p>
     </div>
   );
 }
