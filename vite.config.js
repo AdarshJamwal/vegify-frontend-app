@@ -10,7 +10,7 @@ export default defineConfig({
       "/api": {
         target: "https://vegify-recipe-app-backend.vercel.app",
         changeOrigin: true,
-        secure: false,
+      
       },
     },
   },
